@@ -124,6 +124,7 @@ uint8_t bus_lookup[] = {0,1,2};
 uint8_t can_num_lookup[] = {0,1,2,-1};
 int8_t can_forwarding[] = {-1,-1,-1,-1};
 uint32_t can_speed[] = {5000, 5000, 5000, 333};
+#define CAN_MAX 1U
 
 #define CANIF_FROM_CAN_NUM(num) (cans[num])
 #define CAN_NUM_FROM_CANIF(CAN) ((CAN)==CAN1 ? 0 : ((CAN) == CAN2 ? 1 : 2))
