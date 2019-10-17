@@ -72,7 +72,6 @@ def get_can_parser(CP):
     ("MDPS12", 50),
     ("MDPS11", 100),
     ("TCS15", 10),
-    ("TCS13", 50),
     ("CLU11", 50),
     ("ESP12", 100),
     ("CGW1", 10),
@@ -174,7 +173,8 @@ class CarState():
     self.prev_right_blinker_on = self.right_blinker_on
 
     self.door_all_closed = True
-    self.seatbelt = cp.vl["CGW1"]['CF_Gway_DrvSeatBeltSw']
+    self.seatbelt = 1
+    #cp.vl["CGW1"]['CF_Gway_DrvSeatBeltSw']
 
     self.brake_pressed = cp.vl["TCS13"]['DriverBraking']
     self.esp_disabled = cp.vl["TCS15"]['ESC_Off_Step']
@@ -183,7 +183,7 @@ class CarState():
     self.main_on = (cp.vl["SCC11"]["MainMode_ACC"] != 0) if not self.no_radar else \
                                             cp.vl['EMS16']['CRUISE_LAMP_M']
     self.acc_active = (cp.vl["SCC12"]['ACCMode'] != 0) if not self.no_radar else \
-                                      (cp.vl["LVR12"]['CF_Lvr_CruiseSet'] != 0)
+                                     self.main_on 
     self.pcm_acc_status = int(self.acc_active)
 
     # calc best v_ego estimate, by averaging two opposite corners
@@ -227,12 +227,13 @@ class CarState():
 
     self.user_brake = 0
 
-    self.brake_pressed = cp.vl["TCS13"]['DriverBraking']
+    self.brake_pressed = 0
     self.brake_lights = bool(self.brake_pressed)
-    if (cp.vl["TCS13"]["DriverOverride"] == 0 and cp.vl["TCS13"]['ACC_REQ'] == 1):
-      self.pedal_gas = 0
-    else:
-      self.pedal_gas = cp.vl["EMS12"]['TPS']
+#    if (cp.vl["TCS13"]["DriverOverride"] == 0 and cp.vl["TCS13"]['ACC_REQ'] == 1):
+#      self.pedal_gas = 0
+#    else:
+#      self.pedal_gas = cp.vl["EMS12"]['TPS']
+    self.pedal_gas = 0
     self.car_gas = cp.vl["EMS12"]['TPS']
 
     # Gear Selection via Cluster - For those Kia/Hyundai which are not fully discovered, we can use the Cluster Indicator for Gear Selection, as this seems to be standard over all cars, but is not the preferred method.
